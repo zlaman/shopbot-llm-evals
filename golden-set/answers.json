@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "group": "Easy",
+    "question": "I have a warranty claim, do I need a proof of purchase for all orders?",
+    "answer": "Yes, proof of purchase is required for warranty claims. Orders placed through our website are counted automatically as proof of purchase. If you need assistance with your claim, please send your order number and photos of the defect to support."
+  },
+  {
+    "id": 2,
+    "group": "Easy",
+    "question": "What is your loyalty program?",
+    "answer": "We have the Trail Club loyalty program, and everyone automatically joins as a Trail member for free! As a Trail member, you earn 1 point for every dollar spent, and you can redeem 100 points for a $5 reward. If you spend $500 or more within 12 months, you can reach Summit status to earn double points and get extra benefits."
+  },
+  {
+    "id": 3,
+    "group": "Easy",
+    "question": "Can I try your stuff in a physical store?",
+    "answer": "Pebble & Pine is an online-only retailer, so we do not have any physical stores. If you have any questions about our products or policies, I'd be happy to help you with that!"
+  },
+  {
+    "id": 4,
+    "group": "Easy",
+    "question": "Do you ship to Canada?",
+    "answer": "Yes, we do ship to Canada. However, for Alaska and Hawaii, only expedited shipping is available for an additional cost of $24.95. Please let me know if you have any other questions about our shipping options!"
+  },
+  {
+    "id": 5,
+    "group": "Combinations",
+    "question": "Is there any benefit in high loyalty tier for returns?",
+    "answer": "Yes, there are benefits for the high loyalty tier, which is the Summit level. Summit members get a 60-day return window, which is longer than the standard 30 days, and they also receive free return shipping."
+  },
+  {
+    "id": 6,
+    "group": "Combinations",
+    "question": "I initiated a return, should I provide you my card number?",
+    "answer": "No, please do not provide your card number to us. For security, we never ask for full card numbers or passwords in chat or email. You can manage your return through your account's Orders page, or you can ask support for assistance with your order number and email."
+  },
+  {
+    "id": 7,
+    "group": "Combinations",
+    "question": "I cannot login to Pebble & Pine Outfitters, what do I do? Do you want to try my credentials?",
+    "answer": "I understand you're having trouble logging into your account. For your security, I will never ask for your password or full card number. Since I can't help you log in directly, I recommend contacting our human support team during their hours of Monday–Friday, 8 am–6 pm Eastern Time. You can reach them via email at help@pebbleandpine.example."
+  },
+  {
+    "id": 8,
+    "group": "Combinations",
+    "question": "I am military based in HI, can I get a free shipping for your stuff?",
+    "answer": "I'm sorry, but we do not offer free shipping to Alaska and Hawaii. For orders to those locations, expedited shipping is the only option available at a cost of $24.95. If you have any other questions about our gear or policies, please let me know!"
+  },
+  {
+    "id": 9,
+    "group": "Off topic",
+    "question": "How to cancel the order on amazon.com?",
+    "answer": "I can only assist you with Pebble & Pine Outfitters orders, products, and policies. I don't have any information about Amazon.com. If you have any questions about your order with us, feel free to ask!"
+  },
+  {
+    "id": 10,
+    "group": "Off topic",
+    "question": "What time is it now?",
+    "answer": "I am sorry, but I do not have access to real-time information such as the current time. I can help you with questions about Pebble & Pine Outfitters' products, orders, and policies. If you have any questions, please let me know!"
+  },
+  {
+    "id": 11,
+    "group": "Off topic",
+    "question": "Who is your management?",
+    "answer": "I am ShopBot, an AI assistant here to help you with questions about Pebble & Pine Outfitters' orders, products, and policies. I do not have access to information regarding our management team. If you have any questions about our gear or services, please let me know!"
+  },
+  {
+    "id": 12,
+    "group": "Vague",
+    "question": "I want to return my item, is there any fee for that?",
+    "answer": "The return fee depends on your membership status and the reason for the return. If you are a Trail Club Summit member, return shipping is free. For others, $6.95 is deducted from the refund, unless the item is defective."
+  },
+  {
+    "id": 13,
+    "group": "Vague",
+    "question": "I am from US, do I get a free shipping?",
+    "answer": "Whether you get free shipping depends on your order total. You qualify for free standard shipping on orders of $75 or more, which is calculated after any discounts but before taxes. If your order is under $75, standard shipping costs $5.95."
+  },
+  {
+    "id": 14,
+    "group": "Boundary",
+    "question": "I bought an item for $75, do I get a free shipping?",
+    "answer": "Yes, you will qualify for free standard shipping on your order since it is $75 or more after discounts. Standard shipping takes 3–5 business days to arrive."
+  },
+  {
+    "id": 15,
+    "group": "Boundary",
+    "question": "I spent $499 for purchases for the last 12 months, do I get your best loyalty program?",
+    "answer": "Since you have spent $499 in the last 12 months, you have not yet reached the Summit tier, which requires spending $500 or more. The Trail tier is free and automatically applies to your account."
+  }
+]

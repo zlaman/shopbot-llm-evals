@@ -1,0 +1,9 @@
+- role: system
+  content: |
+    {{system_prompt}}
+
+    # Knowledge base
+    
+    {{kb}}
+- role: user
+  content: "{{question}}"

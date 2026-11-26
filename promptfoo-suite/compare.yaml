@@ -1,0 +1,38 @@
+description: Prompt A vs B comparison
+prompts:
+  - "{{question}}"
+defaultTest:
+  assert:
+    - type: latency
+      threshold: 2000 # slowest prompt is 1350ms, setting threshold to 2000ms so that it catches latency slowdowns
+  options: # sets the model for every similar check, but does not add the check
+    provider:
+      embedding:
+        id: openai:embedding:nomic
+        config: {apiBaseUrl: http://localhost:8082/v1, apiKeyRequired: false, useDefaultApiKey: false}
+providers:
+  - id: file://shopbot_provider.py
+    label: E4B prompt original
+    config:
+      pythonExecutable: ../.venv/bin/python
+      system_prompt_file: system-prompt-a.md # production prompt is B since 2026-11-11; A kept to rerun M03.4
+  - id: file://shopbot_provider.py
+    label: E4B prompt B
+    config:
+      pythonExecutable: ../.venv/bin/python
+      system_prompt_file: system-prompt-b.md
+  - id: file://shopbot_provider.py
+    label: E2B prompt original
+    config:
+      pythonExecutable: ../.venv/bin/python
+      base_url: http://localhost:8083/v1
+      system_prompt_file: system-prompt-a.md
+  - id: file://shopbot_provider.py
+    label: E2B prompt B
+    config:
+      pythonExecutable: ../.venv/bin/python
+      base_url: http://localhost:8083/v1
+      system_prompt_file: system-prompt-b.md
+evaluateOptions:
+  maxConcurrency: 1 # to measure correct latency rather than queue time
+tests: file://golden_tests.py:create_tests

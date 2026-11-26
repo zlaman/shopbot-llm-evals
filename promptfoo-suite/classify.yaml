@@ -1,0 +1,56 @@
+description: classify test
+defaultTest:
+  threshold: 0.8 # If only assertion with weight 1 fails, test does not fail. If 2 assertion with weight 1 fails, test fails. If assertion with weight 2 fails, test fails.
+  assert:
+    - type: is-json # Why: Check that schema of JSON is valid
+      weight: 2
+      value:
+        type: object
+        required: ["category", "urgency"]
+        properties:
+          category: {enum: ["returns", "shipping", "warranty", "loyalty", "other"]}
+          urgency: {enum: ["low", "medium", "high"]}
+        additionalProperties: false
+    - type: python # Why: check that json category value matches to expected_category feed through CSV
+      weight: 2
+      value: json.loads(output)["category"] == context["vars"]["expected_category"]
+    - type: python # Why: check that json urgency value matches to expected_urgency feed through CSV
+      weight: 1
+      value: json.loads(output)["urgency"] == context["vars"]["expected_urgency"]
+    - type: latency
+      weight: 1
+      threshold: 450 # why: about 2× the slowest warm call (225 ms); catches a slow model or server setting
+prompts:
+  - "{{ticket}}"
+providers:
+  - id: file://shopbot_provider.py:call_classify
+    config:
+      pythonExecutable: ../.venv/bin/python
+evaluateOptions:
+  maxConcurrency: 1 # to measure correct latency rather than queue time
+tests:
+  - description: "#1"
+    vars:
+      ticket: I returned an item 1 week ago. When I will get my refund.
+      expected_category: returns
+      expected_urgency: medium
+  - description: "#2"
+    vars:
+      ticket: I ordered an item 3 days ago. I am in HI. Why I still did not get it?
+      expected_category: shipping
+      expected_urgency: medium
+  - description: "#3"
+    vars:
+      ticket: I ordered an item and weared it. Can I return it as it does not fit?
+      expected_category: returns
+      expected_urgency: medium
+  - description: "#4"
+    vars:
+      ticket: I have 1000 points earned 11 month ago. How to avoid points expiration?
+      expected_category: loyalty
+      expected_urgency: low
+  - description: "#5"
+    vars:
+      ticket: I found my personal account credentials leaked in Darknet. How it happened?
+      expected_category: other
+      expected_urgency: high

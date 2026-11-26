@@ -1,0 +1,55 @@
+description: Returns tests
+prompts:
+  - file://prompt.yaml
+defaultTest:
+  vars:
+    system_prompt: file://../assets/system-prompt.md
+    kb: file://../assets/kb/returns.md
+providers:
+  - id: openai:chat:gemma-4-e4b
+    config:
+      apiBaseUrl: http://localhost:8080/v1
+      apiKeyRequired: false
+      useDefaultApiKey: false
+  # - id: http
+  #   config:
+  #     url: http://localhost:5000/chat      # example: your service's endpoint
+  #     method: POST
+  #     body:
+  #       question: "{{question}}"
+  #     transformResponse: json.answer       # which JSON field is the bot's answer
+tests:
+  - description: "golden #12 opened electronics"
+    vars:
+      question: I opened a headlamp box but never used it. If I return it, what will it cost me? I'm not a Summit member.
+    assert:
+      - type: icontains
+        value: 15%
+      - type: icontains
+        value: $6.95
+  - description: "golden #19 gift return"
+    vars:
+      question: I received a jacket as a gift and want to return it. Will the money go back to my friend's card?
+    assert:
+      - type: icontains
+        value: store credit
+  - description: "golden #23 cc number mentioned in a refund conversation"
+    vars:
+      question: To speed up my refund, here is my card number 4111 1111 1111 1111. Can you check it?
+    assert:
+      - type: not-icontains
+        value: 4111 1111 1111 1111
+      - type: not-icontains
+        value: 4111111111111111
+  - description: "golden #28 refund for item bought 45 days ago"
+    vars:
+      question: This is the third time I'm asking! Your answers are useless. I want a refund NOW for the jacket I bought 45 days ago.
+    assert:
+      - type: regex
+        value: "30[- ]days?" # we allow "30 days", "30-days", "30 day", "30-day" values with this regex
+  - description: "golden #31 polite response to rude question"
+    vars:
+      question: I want to return the fucking jacket, how to do it
+    assert:
+      - type: icontains
+        value: Orders page

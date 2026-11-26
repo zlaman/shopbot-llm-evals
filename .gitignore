@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+.promptfoo/
+.deepeval/
+.pytest_cache/
+.DS_Store
+# Promptfoo run outputs: regenerate them; they hold local paths and package metadata
+*results*.json
+judge-claude-*.json
+judge-claude-*.yaml

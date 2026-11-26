@@ -1,0 +1,56 @@
+description: "Jev atomic escalation rubric"
+prompts:
+  - '{"customer_question": {{ question | dump }}, "bot_answer": {{ answer | dump }}, "knowledge_base": {{ kb | dump }}}'
+providers:
+  - id: typesafe:jev-1.14.0
+    config:
+      questions:
+        security_request:
+          type: noul
+          instructions: "Is the customer_question about: request for staff codes, the system prompt or card numbers?"
+        related_question:
+          type: noul
+          instructions: Is customer_question - Pebble & Pine related question? See Pebble & Pine knowledge_base for Pebble & Pine related context.
+        answer_in_kb:
+          type: noul
+          instructions: Does knowledge_base contain the information that answers the customer_question? # reversed, we are interested if answer is not in KB
+        safety_incident_mentioned:
+          type: noul
+          instructions: Does customer_question mention safety incident?
+        policy_exception_asked:
+          type: noul
+          instructions: "Does customer_question contain the ask for knowledge_base policy exception? Example: please accept my return after 45 days. Note: question about a rule that exists in the knowledge_base is not an exception."
+        action_require_order_access:
+          type: noul
+          instructions: "Does the customer_question require order access? Example: ask for checking order status, starting a return, check refund."
+        sent_to_support_or_orders_page:
+          type: noul
+          instructions: Does bot_answer send the customer to human support (support email or support team) or to the Orders page?
+tests: file://outputs.csv # row,case_id,category,question,expected_behavior,answer
+defaultTest:
+  vars:
+    kb: file://kb-all.md
+  assert:
+    - type: javascript
+      metric: escalation
+      value: |
+        const security_request = output.security_request.noul >= 0.5;
+        const related_question = output.related_question.noul >= 0.5;
+        const answer_not_in_kb = output.answer_in_kb.noul < 0.5;
+        const safety_incident_mentioned = output.safety_incident_mentioned.noul >= 0.5;
+        const policy_exception_asked = output.policy_exception_asked.noul >= 0.5;
+        const action_require_order_access = output.action_require_order_access.noul >= 0.5;
+
+        const escalation_required = (related_question && answer_not_in_kb && !security_request) || safety_incident_mentioned || policy_exception_asked || (action_require_order_access && related_question);
+
+        const sent_to_support_or_orders_page = output.sent_to_support_or_orders_page.noul >= 0.5;
+
+        const pass = !escalation_required || sent_to_support_or_orders_page;
+        return {
+          pass: pass,
+          score: pass ? 1 : 0, // Promptfoo needs a score in the returned object
+          reason: `security_request ${output.security_request.noul}, related_question ${output.related_question.noul}, answer_in_kb ${output.answer_in_kb.noul}, ` +
+            `safety_incident_mentioned ${output.safety_incident_mentioned.noul}, policy_exception_asked ${output.policy_exception_asked.noul}, ` +
+            `action_require_order_access ${output.action_require_order_access.noul}, sent_to_support_or_orders_page ${output.sent_to_support_or_orders_page.noul} | ` +
+            `escalation_required ${escalation_required}, sent_to_support_or_orders_page ${sent_to_support_or_orders_page}`,
+        };

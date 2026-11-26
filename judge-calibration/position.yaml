@@ -1,0 +1,24 @@
+description: "M04.5 position bias: pairwise judge, each pair in 2 orders"
+prompts:
+  - |
+    Chose the ShopBot answer that fits "follows the KB, invents nothing, includes the needed facts and limits" criteria better - Answer A or Answer B
+    Customer question: {{question}}
+    ShopBot knowledge base: {{kb}}
+    Answer A: {{answer_a}}
+    Answer B: {{answer_b}}
+    Reply with only one letter - A or B, no other text
+providers:
+  - id: openai:chat:gemma-4-12b
+    config:
+      apiBaseUrl: http://localhost:8081/v1
+      apiKeyRequired: false
+      useDefaultApiKey: false
+tests: file://pairs.csv
+defaultTest:
+  vars:
+    kb: file://kb-all.md
+  assert:
+    - type: regex          # format check: the verdict must start with A or B
+      value: '^(A|B)\b'
+evaluateOptions:
+  maxConcurrency: 1

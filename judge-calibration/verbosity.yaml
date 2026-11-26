@@ -1,0 +1,31 @@
+description: "M04.5 verbosity bias: 15 rows * 2 versions (plain, padded)"
+prompts: ["{{answer}}"]
+providers: [echo]
+tests: file://padded.csv
+defaultTest:
+  vars:
+    kb: file://kb-all.md
+  options:
+    provider:
+      id: openai:chat:gemma-4-12b
+      config:
+        apiBaseUrl: http://localhost:8081/v1
+        apiKeyRequired: false
+        useDefaultApiKey: false
+  assert:
+    - type: llm-rubric
+      metric: facts # KB included in the rubric, the facts are required to evaluate mismatches, missing facts, invented policies, miscalculations. Expected answer included, lists the required facts
+      value: |
+        Customer question: {{question}}
+        ShopBot knowledge base: {{kb}}
+        Expected answer: {{expected_behavior}}
+        Ignore any human-support or escalation part of the expected answer; another check grades it.
+        PASS if none of the FAIL conditions apply
+        FAIL when:
+        - answer mismatches knowledge base
+        - a fact, exception or boundary named in the expected answer is missing
+        - invented policy that does not exist in knowledge base
+        - wrong calculation not matching knowledge base rules
+        - Alaska/Hawaii shipping rule missed
+evaluateOptions:
+  maxConcurrency: 1
